@@ -7,7 +7,7 @@ const User = require("../models/user");
 const { protect } = require('../middlewares/authMiddleware')
 
 // registring user
-router.post('/', async(req, res) =>{
+router.post('/register', async(req, res) =>{
     const {name, email, password} = req.body;
 
 // Check if any field is passe empty

@@ -9,6 +9,9 @@ const User = require('./controllers/userController');
 const Posts = require('./controllers/postController');
 const Comments = require('./controllers/commentController');
 
+const cors = require('cors');
+app.use(cors({ origin: 'http://localhost:5173' }));
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
