@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 
 const Login = () => {
     const [email, setEmail] = useState(" ");
     const [password, setPassword] = useState(" ");
     const [error, setError] = useState(" ");
     const [message, setMessage] = useState(" ");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,11 +21,17 @@ const Login = () => {
             const response = await axios.post('http://localhost:3000/api/users/login', {
                 email,
                 password
-            })
+            });
+
+            localStorage.setItem("token", response.data.token);
+            console.log('Token in localStorage:', localStorage.getItem('token'));
+
             setMessage(`logedin successfully as ${response.data.name}`);
             setEmail('');
             setPassword('');
-            console.log(response.data)
+            console.log(response.data);
+            navigate('/');
+
         } catch (error) {
             console.log(error)
             setError('Invalid credentials')

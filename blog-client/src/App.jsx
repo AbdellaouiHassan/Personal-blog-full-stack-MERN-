@@ -4,15 +4,23 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import { Route, Routes } from 'react-router'
 import PostForm from './components/PostForm'
+import Home from './pages/Home'
+import Layouts from './layouts/Layouts'
+import PostList from './components/PostList'
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <Routes>
-      <Route path='/register' element={<Register/>}/>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/posts/add' element={<PostForm/>}/>
+      <Route path='/' element={<Layouts/>}>
+        <Route index element={<Home/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/add-post' element={<PostForm/>}/>
+        <Route path='/posts/:id' element={<PostList/>}/>
+      </Route>
+      
     </Routes>
   )
 }

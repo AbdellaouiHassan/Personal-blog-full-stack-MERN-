@@ -4,7 +4,7 @@ const router = express.Router();
 const Post = require('../models/post');
 const { protect } = require('../middlewares/authMiddleware');
 
-router.post('/', protect, async (req, res) => {
+router.post('/add-post', protect, async (req, res) => {
   try {
     const { title, content } = req.body;
     
@@ -14,27 +14,27 @@ router.post('/', protect, async (req, res) => {
       author: req.user.id 
     });
 
-    await post.save();
+    await post.save().populate('author', 'name email');
     res.status(201).json(post);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to create post'});
+    res.status(500).json({ message: 'Failed to create post' , err});
   }
 });
 
-router.get('/getposts', protect, async(req, res) =>{
+router.get('/posts', async(req, res) =>{
     try {
-       const posts = await Post.find();
+       const posts = await Post.find().populate('author', 'name email');
        res.status(200).json(posts);
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch posts', error});
     }
 });
 
-router.get('/getpost/:id', protect, async(req, res) => {
+router.get('/posts/:id', async(req, res) => {
     const { id } = req.params;
     
     try {
-        const post = await Post.findById(id);
+        const post = await Post.findById(id).populate('author', 'name email');
         res.status(200).json(post);
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch posts'});

@@ -28,5 +28,5 @@ app.listen(port, () => {
 
 
 app.use('/api/users', User);
-app.use('/api/posts', Posts);
-app.use('/api/comments', Comments);
+app.use('/api', Posts);
+app.use('/api', Comments);
