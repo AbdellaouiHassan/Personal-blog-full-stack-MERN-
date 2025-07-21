@@ -15,7 +15,7 @@ router.post('/add-comment', protect, async(req, res) => {
             author: req.user.id
     });
 
-    (await comment.save()).populate('author', 'name');
+    (await comment.save());
     res.status(201).json({message: 'comment created', comment});
 
     } catch (error) {
@@ -44,24 +44,39 @@ router.get('/comments/:id',  async(req, res) => {
     }
 });
 
-router.put('/updatecomment/:id', protect, async(req, res) => {
+router.put('/update-comment/:id', protect, async(req, res) => {
     const { id } = req.params;
     try {
-        const updatedcomment = await Comment.findByIdAndUpdate(id, req.body, {new: true, runValidators: true}).populate('author', 'name');
+        const updatedcomment = await Comment.findByIdAndUpdate(id, req.body, {new: true, runValidators: true});
         res.status(200).json({message: 'comment updated:', updatedcomment})
     } catch (error) {
         res.status(400).json("failed to update the comment")
     }
 });
 
-router.delete('/deletecomment/:id', protect, async(req, res) => {
+router.delete('/delete-comment/:id', protect, async(req, res) => {
     const { id } = req.params;
     try {
-        const delettedcomment = await Comment.findByIdAndDelete(id).populate('author', 'name');
+        const delettedcomment = await Comment.findByIdAndDelete(id);
         res.status(200).json({message: 'comment deletted:', delettedcomment})
     } catch (error) {
         res.status(400).json("failed to delete the comment")
     }
-})
+});
+
+
+router.delete('/delete-post-comments/:id', protect, async(req, res) => {
+    const { id } = req.params;
+    console.log(id)
+    try {
+        console.log('try', id)
+        const comments = await Comment.deleteMany({post: id});
+        res.status(200).json({message: 'comment deletted:', comments})
+    } catch (error) {
+        res.status(400).json("failed to delete the comment")
+    }
+});
+
+
 
 module.exports = router; 

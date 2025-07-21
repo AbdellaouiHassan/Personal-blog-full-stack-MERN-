@@ -26,6 +26,7 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
+app.use('/uploads', express.static('uploads'));
 
 app.use('/api/users', User);
 app.use('/api', Posts);

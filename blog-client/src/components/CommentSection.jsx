@@ -3,14 +3,22 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 const CommentSection = () => {
-    const [comment, setComment] = useState(' ');
+    const [comment, setComment] = useState('');
     const [comments, setComments] = useState([ ]);
     const { id } = useParams();
+    const [error, setError] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const isLoggedIn = !!localStorage.getItem('token');
+        
+        if(!isLoggedIn){
+            setError('You have to log in to be able to add comments');
+            return;
+        }
 
         if(!comment){
+            setError(`You can't add an empty comment`)
             return;
         };
         
@@ -28,6 +36,8 @@ const CommentSection = () => {
             }
         )
         console.log(res.data);
+        fetchComments();
+        setComment('');
         } catch (error) {
             console.log(error)
         }
@@ -36,8 +46,8 @@ const CommentSection = () => {
     const fetchComments = async () => {
         try {
             const res = await axios.get('http://localhost:3000/api/comments',
-                {params:{ id },
-            });
+                {params:{ id }}
+            );
             setComments(res.data.comments);
         } catch (error) {
             console.log(error);
@@ -46,7 +56,7 @@ const CommentSection = () => {
 
     useEffect(() =>{
         fetchComments()
-    }, [comments])
+    }, [])
 
 
   return (
@@ -64,6 +74,7 @@ const CommentSection = () => {
             onChange={(e) => setComment(e.target.value)}
             placeholder="Write your comment..."
         />
+        {error && (<div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>)}
         </div>
         <button type="submit" className="btn btn-primary">
         Add comment

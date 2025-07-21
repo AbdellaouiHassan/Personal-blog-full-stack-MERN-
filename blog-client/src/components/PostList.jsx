@@ -33,6 +33,13 @@ const PostList = ({ posts }) => {
               <p className="card-text flex-grow-1">
                 {post.content}
               </p>
+              {post.image && (
+              <img
+                src={`http://localhost:3000/uploads/${post.image}`}
+                alt="Post"
+                className="img-fluid rounded mb-4 shadow-sm"
+              />
+               )}
             </div>
           </div>
         </div>

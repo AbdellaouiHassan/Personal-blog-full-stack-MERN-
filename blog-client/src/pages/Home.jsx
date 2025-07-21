@@ -5,12 +5,29 @@ import { Link } from 'react-router';
 
 const Home = () => {
  const [posts, setPosts] = useState([]);
+ const [searchQuery, setSearchQuery] = useState("")
 
-  // Dummy data for now (replace with API data later)
     const fetchPosts = async() => {
         const res = await axios.get('http://localhost:3000/api/posts');
         setPosts(res.data);
         console.log(res.data)
+    }
+
+    const handleSearch = async (query) => {
+      const trimmed = query.trim();
+      if (!trimmed) return;
+      const res = await axios.get('http://localhost:3000/api/search-posts', 
+       {params: { searchQuery: trimmed }},
+      );
+      setPosts(res.data);
+      console.log(res.data)
+    }
+
+    const handleInput = (e) =>{
+      const value = e.target.value
+      setSearchQuery(value);
+
+      handleSearch(value)
     }
 
   useEffect(() => {
@@ -27,6 +44,8 @@ const Home = () => {
             type="text"
             className="form-control"
             placeholder="Search posts..."
+            value={searchQuery}
+            onChange={handleInput}
           />
         </div>
       </div>

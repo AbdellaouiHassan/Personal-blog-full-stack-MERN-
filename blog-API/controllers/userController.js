@@ -10,7 +10,7 @@ const { protect } = require('../middlewares/authMiddleware')
 router.post('/register', async(req, res) =>{
     const {name, email, password} = req.body;
 
-// Check if any field is passe empty
+// Check if any field is passed empty
     if(!name || !email || !password){
         res.status(400);
         throw new Error("All fields are required")

@@ -7,6 +7,8 @@ import PostForm from './components/PostForm'
 import Home from './pages/Home'
 import Layouts from './layouts/Layouts'
 import PostList from './components/PostList'
+import Dashboard from './pages/Dashboard'
+import UpdatePost from './pages/UpdatePost'
 
 
 function App() {
@@ -19,6 +21,9 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/add-post' element={<PostForm/>}/>
         <Route path='/posts/:id' element={<PostList/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/edit-post/:id' element={<UpdatePost/>}/>
+
       </Route>
       
     </Routes>
