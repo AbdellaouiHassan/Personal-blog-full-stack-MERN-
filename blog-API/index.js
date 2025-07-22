@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 mongoose.connect('mongodb://localhost:27017/BlogDb').then(()=>{
   console.log("connected to mongo DB");
 }).catch( err =>{
-  console.log("error connecting to mongo DB", err);
+  console.log("error while connecting to mongo DB", err);
 });
 
 app.listen(port, () => {

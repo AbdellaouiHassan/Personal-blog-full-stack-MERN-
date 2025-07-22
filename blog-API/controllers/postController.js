@@ -73,13 +73,18 @@ router.get('/posts/:id', async(req, res) => {
 });
 
 router.put('/update-post/:id', protect, upload.single('image'), async(req, res) => {
-    const { title, content } = req.body;
     const image = req.file ? req.file.filename : null;
     const { id } = req.params;
+    let title ;
+    let content;
 
     try {
-         const oldPost = await Post.findById(id);
+        const oldPost = await Post.findById(id);
         if (!oldPost) return res.status(404).json({ message: 'Post not found' });
+
+        title = req.body.title || oldPost.title;
+        content = req.body.content || oldPost.content;
+
 
         let updatedImage = oldPost.image;
         if (req.file) {
@@ -92,8 +97,8 @@ router.put('/update-post/:id', protect, upload.single('image'), async(req, res) 
                 });
             }
             });
-
         }
+        
         updatedImage = req.file.filename;
         }
         const updatedPost = await Post.findByIdAndUpdate(
